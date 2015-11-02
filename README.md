@@ -18,8 +18,8 @@ One Docker Compose will run:
 
 # 1.  Prerequisite: at the end of README.
 
-# 2. Get all files from bitbucket
-    git clone https://bitbucket.org/docker-elk-cadvisor-dashboards
+# 2. Get all files from github
+    git clone https://github.com/gregbkr/docker-elk-cadvisor-dashboards
 
 # 3. Rename and go to elk folder:    
     mv docker-elk-cadvisor-dashboards elk
