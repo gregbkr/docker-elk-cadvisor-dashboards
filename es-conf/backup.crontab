@@ -1,0 +1,20 @@
+
+### ELASTIC BACKUP ###########################################################
+# 1. Backup shorterm every 10 min
+*/10 * * * * docker run --rm --name curator_short_bck --log-driver=syslog --log-opt syslog-address=udp://localhost:5000 --log-opt syslog-tag="curator_short_bck" bobrik/curator --host 192.168.33.10 --port 9200 --timeout 600 snapshot --repository index_shortterm_bck indices --all-indices
+
+# 2. Delete old snapshot in shortterm rep every hours
+30 * * * * docker run --rm --name curator_short_del --log-driver=syslog --log-opt syslog-address=udp://localhost:5000 --log-opt syslog-tag="curator_short_del" bobrik/curator --host 192.168.33.10 --port 9200 --timeout 600 delete snapshots --repository index_shortterm_bck --older-than 2 --time-unit days
+
+# 3. Daily backup when index is optimized (when 2 days old)
+15 0 * * * docker run --rm --name curator_long_bck --log-driver=syslog --log-opt syslog-address=udp://localhost:5000 --log-opt syslog-tag="curator_long_bck" bobrik/curator --host 192.168.33.10 --port 9200 --timeout 600 snapshot --repository index_longterm_bck indices --older-than 2 --time-unit days --timestring '%Y.%m.%d'
+
+# 4. Daily delete old snapshot from longterm rep
+40 0 * * * docker run --rm --name curator_long_del --log-driver=syslog --log-opt syslog-address=udp://localhost:5000 --log-opt syslog-tag="curator_long_del" bobrik/curator --host 192.168.33.10 --port 9200 --timeout 600 delete snapshots --repository index_longterm_bck --older-than 7 --time-unit days
+
+# 5. Daily close indices older than x
+5 1 * * * docker run --rm --name curator_index_close --log-driver=syslog --log-opt syslog-address=udp://localhost:5000 --log-opt syslog-tag="curator_index_close" bobrik/curator --host 192.168.33.10 --port 9200 --timeout 21500 close indices --older-than 8 --time-unit days --timestring %Y.%m.%d
+
+# 6. Daily delete indices older than x
+15 1 * * * docker run --rm --name curator_index_del --log-driver=syslog --log-opt syslog-address=udp://localhost:5000 --log-opt syslog-tag="curator_index_del" bobrik/curator --host 192.168.33.10 --port 9200 --timeout 21500 delete indices --older-than 10 --time-unit days --timestring %Y.%m.%d
+### END ELASTIC BACKUP #######################################################

@@ -1,0 +1,59 @@
+{
+  "cadvisor" : {
+    "order" : 0,
+    "template" : "cadvisor*",
+    "settings" : { },
+    "mappings" : {
+      "_default_" : {
+        "dynamic_templates" : [ {
+          "message_field" : {
+            "mapping" : {
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string"
+            },
+            "match_mapping_type" : "string",
+            "match" : "message"
+          }
+        }, {
+          "string_fields" : {
+            "mapping" : {
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string",
+              "fields" : {
+                "raw" : {
+                  "ignore_above" : 256,
+                  "index" : "not_analyzed",
+                  "type" : "string"
+                }
+              }
+            },
+            "match_mapping_type" : "string",
+            "match" : "*"
+          }
+        } ],
+        "_all" : {
+          "omit_norms" : true,
+          "enabled" : true
+        },
+        "properties" : {
+          "geoip" : {
+            "dynamic" : true,
+            "type" : "object",
+            "properties" : {
+              "location" : {
+                "type" : "geo_point"
+              }
+            }
+          },
+          "@version" : {
+            "index" : "not_analyzed",
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "aliases" : { }
+  }
+}

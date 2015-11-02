@@ -1,0 +1,76 @@
+elasticdata:
+  image: elasticsearch:1.7.0
+  volumes:
+   - /var/lib/elasticsearch/data
+   - /var/lib/elasticsearch/logs
+   - /tmp/elasticsearch
+  command: chown elasticsearch:elasticsearch /var/lib/elasticsearch/logs /var/lib/elasticsearch/data /tmp/elasticsearch
+
+elasticsearch:
+  image: elasticsearch:1.7.0
+  volumes_from:
+    - elasticdata
+  volumes:
+   - $PWD/es-conf/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+   - $PWD/es-conf/templates:/usr/share/elasticsearch/config/templates
+   - $PWD/backup:/mount/backup
+  ports:
+    - "9200:9200"
+    - "9300:9300"
+  log_driver: "syslog"
+  log_opt:
+    syslog-address: "udp://localhost:5000"
+    syslog-tag: "elasticsearch"
+
+proxyelk:
+  image: nginx:1.9.3
+  links:
+    - kibana
+  ports:
+    - "5600:5600"
+  volumes:
+    - $PWD/proxy-conf:/etc/nginx/conf.d
+  log_driver: "syslog"
+  log_opt:
+    syslog-address: "udp://localhost:5000"
+    syslog-tag: "proxyelk"
+
+kibana:
+  image: kibana:4.1.1
+  links:
+    - elasticsearch
+  ports:
+    - "5601:5601"
+  log_driver: "syslog"
+  log_opt:
+    syslog-address: "udp://localhost:5000"
+    syslog-tag: "kibana"
+
+logstash:
+  image: logstash:1.5.3
+  ports:
+    - "5000:5000"
+    - "5000:5000/udp"
+  volumes:
+    - $PWD/logstash-conf:/opt/logstash/conf.d
+  links:
+    - elasticsearch
+  command: -f /opt/logstash/conf.d/logstash.conf
+  log_driver: "syslog"
+  log_opt:
+    syslog-address: "udp://localhost:5000"
+    syslog-tag: "logstash"
+
+cadvisor:
+  image: google/cadvisor:latest
+  restart: always
+  ports:
+    - "8888:8080"
+  volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+  links: 
+    - elasticsearch
+  command: -storage_driver="elasticsearch" -alsologtostderr=true -storage_driver_es_host="http://elasticsearch:9200"

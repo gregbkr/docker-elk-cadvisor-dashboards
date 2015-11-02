@@ -1,0 +1,5 @@
+[2015-08-01 17:16:08,054][INFO ][cluster.metadata ] [Patsy Walker] [.kibana] update_mapping [config] (dynamic)
+[2015-08-03 23:27:54,896][DEBUG][action.search.type       ] [Ruckus] All shards failed for phase: [query]
+org.elasticsearch.search.SearchParseException:]}]]
+        at org.elasticsearch.search.SearchService.parseSource(SearchService.java:747)
+        at org.elasticsearch.search.SearchService.createContext(SearchService.java:572)
