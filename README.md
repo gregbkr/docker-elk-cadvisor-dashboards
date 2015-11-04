@@ -16,7 +16,7 @@ One Docker Compose will run:
 * Ngnix Proxy 1.9.3 (for SSL + password access).
 
 The result:
-![Dashboard.png](https://bitbucket.org/gregbkr/docker-elk-cadvisor-dashboards/raw/master/Dashboard.png)
+![Dashboard.png](https://github.com/gregbkr/docker-elk-cadvisor-dashboards/raw/master/Dashboard.png)
 
 # 1.  Prerequisite: at the end of README.
 
