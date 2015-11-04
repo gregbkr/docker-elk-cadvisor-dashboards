@@ -15,6 +15,8 @@ One Docker Compose will run:
 * cAdvisor (Collect & View containers performance)
 * Ngnix Proxy 1.9.3 (for SSL + password access).
 
+The result:
+![ELK_Infra.png](https://bitbucket.org/gregbk/docker-elk-cadvisor-dashboards/raw/master/ELK_Infra.png)
 
 # 1.  Prerequisite: at the end of README.
 
