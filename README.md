@@ -1,6 +1,6 @@
 # RUN LOGGING INFRA : ELK STACK (+ docker syslog driver)
 
-![ELK_Infra.png](https://bitbucket.org/gregbk/docker-elk-cadvisor-dashboards/raw/master/ELK_Infra.png)
+![ELK_Infra.png](https://github.com/gregbkr/docker-elk-cadvisor-dashboards/raw/master/ELK_Infra.png)
 
 # 0. Summary:
 
@@ -20,8 +20,8 @@ The result:
 
 # 1.  Prerequisite: at the end of README.
 
-# 2. Get all files from bitbucket
-    git clone https://bitbucket.org/docker-elk-cadvisor-dashboards
+# 2. Get all files from github
+    git clone https://github.com/gregbkr/docker-elk-cadvisor-dashboards
 
 # 3. Rename and go to elk folder:    
     mv docker-elk-cadvisor-dashboards elk
@@ -98,7 +98,7 @@ If not, please check index-mgmt.md setting index-pattern, or template (raw field
 
 
 #
-#-------------------------- Config  ----------------------------------
+#---------------------- Config  -------------------------------
 
 
 
@@ -121,7 +121,7 @@ If you got the field tags = ParseFailure, means your parsing is wrong somewhere.
 You can use https://grokdebug.herokuapp.com/ in order to check a log parsing. 
 
 #
-#-------------------------- Backup and Restore and optimize ------------------------
+#----------------- Backup and Restore and optimize -
 
 # 12. Index management (backup, restore, rotate)
 
@@ -138,7 +138,7 @@ You can now monitor the backup via CURATOR dashboard
 More info in file: index-mgmt.md
 
 #
-#-------------------------- Stop and refresh ----------------------------------
+#---------------------- Stop and refresh -------------------
 # 13. To stop compose
     docker-compose stop
 
@@ -146,7 +146,7 @@ More info in file: index-mgmt.md
     docker restart elk_logstash_1
 
 
-#------------------------- TODO NEXT ----------------------------------
+#--------------------- TODO NEXT --------------------------
 
 * cAdvisor stats: correct some bugs and add more graphs.
 * Backup and restore: tests full recovery
@@ -154,7 +154,7 @@ More info in file: index-mgmt.md
 * Event alerting (via email)
 
 #
-#-------------------------- Errors  ----------------------------------
+#---------------------- Errors  ----------------------------------
 # Port in use:
 listen tcp 0.0.0.0:80: bind: address already in use: --> stop nginx service:
 
@@ -167,7 +167,7 @@ Checks logs on compose and container:
     docker-compose logs
     docker log -f elk_logstash_1
 
-#-------------------------Prerequisite ----------------------------------
+#--------------------Prerequisite -----------------------------
 
 # a. Use the vagrantfile provided in the root in order to have a configured environment with docker and compose already up to date.
 
@@ -213,7 +213,7 @@ Add the following NAT rule to allow outgoing connection from docker network:
     iptables -t nat -A POSTROUTING ! -o docker0 -s 172.17.0.0/16 -j MASQUERADE
 
 
-#------------------------- MISC ----------------------------------
+#-------------------- MISC -----------------------------
 
 # configure your own logo 
 (height: 45px; width: 252px)
