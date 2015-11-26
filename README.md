@@ -1,8 +1,8 @@
-# RUN LOGGING INFRA : ELK STACK (+ docker syslog driver)
+## RUN LOGGING INFRA : ELK STACK (+ docker syslog driver)
 
 ![ELK_Infra.png](https://github.com/gregbkr/docker-elk-cadvisor-dashboards/raw/master/ELK_Infra.png)
 
-# 0. Summary:
+## 0. Summary:
 
 This build will setup ELK stack, and bring you dashboards in order to visualize ELK logs as a first example. 
 You can run on the vagrant provided, or on a test host, where logs from already running docker containers will automatically be forwarded to ELK.
@@ -18,21 +18,21 @@ One Docker Compose will run:
 The result:
 ![Dashboard.png](https://github.com/gregbkr/docker-elk-cadvisor-dashboards/raw/master/Dashboard.png)
 
-# 1.  Prerequisite: at the end of README.
+## 1.  Prerequisite: at the end of README.
 
-# 2. Get all files from github
+## 2. Get all files from github
     git clone https://github.com/gregbkr/docker-elk-cadvisor-dashboards
 
-# 3. Rename and go to elk folder:    
+## 3. Rename and go to elk folder:    
     mv docker-elk-cadvisor-dashboards elk
     cd elk
 
-# 4. Run all containers:
+## 4. Run all containers:
 (you probably get the error with port 80, see error section below)
 
     docker-compose up -d
 
-# 5. Deploy initialization:
+## 5. Deploy initialization:
 
 Wait 5 min Deploy all init:
 
@@ -55,14 +55,14 @@ Deploy fake logs (good to test Web dashboard for IP map):
     kibana-conf/deploy-fake-logs.sh
 
     
-# 6. Log on kibana to see the result
+## 6. Log on kibana to see the result
 (If script failed configure manually the index pattern: in Setting > Indice : tick both boxes and select @timestamp)
 
 http://dev.local:5601 (direct without proxy)
 
 https://dev.local:5600 (!HTTPS ONLY! enter the credentials admin/Kibana05) 
 
-# 7. Import all dashboards and Searches: 
+## 7. Import all dashboards and Searches: 
     Setting > Object > Import > /kibana-conf/export_vX.json
 
 If some dashboards do not display well, need to wait 2 min for the data to come in, then refresh the fields in order to force ELK to initialize  them now:
@@ -70,7 +70,7 @@ If some dashboards do not display well, need to wait 2 min for the data to come 
     Setting > Indices > [logstash-]YYYY.MM.DD > Reload field list (the circle arrow in orange)
 
 
-# 9. cAdvisor --> ELK
+## 9. cAdvisor --> ELK
 
 cAdvisor will catch containers metrics running on your docker host, and then send it to ELK.
 cAdvisor should already be running through docker-compose.
@@ -100,9 +100,7 @@ If not, please check index-mgmt.md setting index-pattern, or template (raw field
 #
 #---------------------- Config  -------------------------------
 
-
-
-# 10. Logstash
+## 10. Logstash
 
 ### Validate your config 
 
@@ -121,9 +119,9 @@ If you got the field tags = ParseFailure, means your parsing is wrong somewhere.
 You can use https://grokdebug.herokuapp.com/ in order to check a log parsing. 
 
 #
-#----------------- Backup and Restore and optimize -
+#------ Backup and Restore and optimize ------
 
-# 12. Index management (backup, restore, rotate)
+## 12. Index management (backup, restore, rotate)
 
 Configure backup storage  : (done in initialization step - in our case, backups will go in the $PWD/backup local folder)
 
@@ -139,10 +137,10 @@ More info in file: index-mgmt.md
 
 #
 #---------------------- Stop and refresh -------------------
-# 13. To stop compose
+## 13. To stop compose
     docker-compose stop
 
-# 14. To refresh logstash after a modification in the logstash.conf file:
+## 14. To refresh logstash after a modification in the logstash.conf file:
     docker restart elk_logstash_1
 
 
@@ -155,12 +153,12 @@ More info in file: index-mgmt.md
 
 #
 #---------------------- Errors  ----------------------------------
-# Port in use:
+## Port in use:
 listen tcp 0.0.0.0:80: bind: address already in use: --> stop nginx service:
 
     sudo service nginx stop
 
-# Container seems to not run:
+## Container seems to not run:
 
 Checks logs on compose and container:
 
@@ -169,9 +167,9 @@ Checks logs on compose and container:
 
 #--------------------Prerequisite -----------------------------
 
-# a. Use the vagrantfile provided in the root in order to have a configured environment with docker and compose already up to date.
+### a. Use the vagrantfile provided in the root in order to have a configured environment with docker and compose already up to date.
 
-# b. In the whole page we use dev.local = your_host_ip = where the containers run. Please use your IP or map it in your local hosts file (laptop and vagrant VM).
+### b. In the whole page we use dev.local = your_host_ip = where the containers run. Please use your IP or map it in your local hosts file (laptop and vagrant VM).
     ip a | grep 'scope global eth'
 
 For Linux/MAC:
@@ -182,19 +180,19 @@ For Windows (copy file to desktop, edit, and copy back ;-):
 
     c:\windows\system32\etc\driver\hosts
 
-# c. Install Docker (1.8.1)
+### c. Install Docker (1.8.1)
 
     wget -qO- https://get.docker.com/ | sed 's/lxc-docker/lxc-docker-1.8.1/' | sh
     gpasswd -a vagrant docker
     service docker restart
 
-# d. Install Compose (1.4.0)
+### d. Install Compose (1.4.0)
     
     sudo sh -c "curl -L https://github.com/docker/compose/releases/download/1.4.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
     sudo chmod +x /usr/local/bin/docker-compose
     sudo sh -c "curl -L https://raw.githubusercontent.com/docker/compose/1.4.0/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose"
 
-# e. Firewall + Docker
+### e. Firewall + Docker
 
 Be carefull if you have firewall activated on the docker host. PLease follow that config:
  
@@ -215,13 +213,13 @@ Add the following NAT rule to allow outgoing connection from docker network:
 
 #-------------------- MISC -----------------------------
 
-# configure your own logo 
+### configure your own logo 
 (height: 45px; width: 252px)
     
     docker cp kibana-conf/no_border.png elk_kibana_1:/opt/kibana/s rc/public/images
 
 
-# Clean up Docker to free space on host
+### Clean up Docker to free space on host
  
 Treesize: install and check your disk 
 
