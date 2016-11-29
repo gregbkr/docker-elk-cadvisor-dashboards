@@ -15,6 +15,8 @@ One Docker Compose will run:
 * cAdvisor (Collect & View containers performance)
 * Ngnix Proxy 1.9.3 (for SSL + password access).
 
+--> want to use the new version 5 of Elastic & kibana, have a look here: https://github.com/gregbkr/elk-dashboard-v5-docker
+
 The result:
 ![Dashboard.png](https://github.com/gregbkr/docker-elk-cadvisor-dashboards/raw/master/Dashboard.png)
 
